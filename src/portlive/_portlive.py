@@ -52,7 +52,7 @@ class PortLive:
                         setattr(self, modules[name], importlib.import_module('.'+path, package))
                     else:
                         setattr(self, name2, importlib.import_module('.'+path, package))
-                except ImportError: # if fails
+                except Exception: # if fails
                     if loading_message:
                         print(loading_message)
                     
@@ -80,7 +80,7 @@ class PortLive:
                         setattr(self, modules[name], importlib.import_module(name))
                     else:
                         setattr(self, name, importlib.import_module(name))
-                except ImportError: # if importing fails
+                except Exception: # if importing fails
                     if loading_message:
                         print(loading_message)
                     
