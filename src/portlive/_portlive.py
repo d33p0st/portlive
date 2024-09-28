@@ -48,10 +48,14 @@ class PortLive:
             if package: # if package is not none
                 # try to import the library
                 try:
-                    if modules[name]:
-                        setattr(self, modules[name], importlib.import_module('.'+path, package))
-                    else:
-                        setattr(self, name2, importlib.import_module('.'+path, package))
+                    try:
+                        fetched = importlib.import_module('.'+path, package)
+                        if modules[name]:
+                            setattr(self, modules[name], fetched)
+                        else:
+                            setattr(self, name2, fetched)
+                    except ModuleNotFoundError:
+                        raise Exception()
                 except Exception: # if fails
                     if loading_message:
                         print(loading_message)
@@ -76,10 +80,15 @@ class PortLive:
                     
             else: # if package is none
                 try: # try importing it
-                    if modules[name]:
-                        setattr(self, modules[name], importlib.import_module(name))
-                    else:
-                        setattr(self, name, importlib.import_module(name))
+                    try:
+                        fetched = importlib.import_module(name)
+
+                        if modules[name]:
+                            setattr(self, modules[name], importlib.import_module(name))
+                        else:
+                            setattr(self, name, importlib.import_module(name))
+                    except ModuleNotFoundError:
+                        raise Exception()
                 except Exception: # if importing fails
                     if loading_message:
                         print(loading_message)
